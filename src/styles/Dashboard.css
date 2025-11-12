@@ -567,8 +567,7 @@ body {
   color: #000000;
   font-weight: bold;  
 }  
-}  
-}  
+}    
 @media (max-width: 1200px) {  
   .universities-grid {  
     grid-template-columns: repeat(4, 1fr);  
@@ -599,5 +598,4 @@ body {
   .university-logo img {  
     max-width: 60%;  
   }  
-}  
 }  
