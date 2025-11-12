@@ -6,21 +6,21 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    text-align: center; /* Centerkan teks */
+    text-align: center;
     padding: 20px;
 }
 
 .landing-logo {
-    max-width: 25%;  /* Logo responsif */
+    max-width: 25%;
     height: auto;
-    margin-bottom: 20px;  /* Memberikan jarak antara logo dan teks */
+    margin-bottom: 20px;
 }
 
 .landing-login-button, .landing-register-button {
     background: black;
     color: white;
     border: 3px solid black;
-    transition: background 1s linear 0ms, color 500ms linear 0ms;
+    transition: background 1s linear, color 500ms linear;
     width: 500px;
     padding: 16px;
     border-radius: 30px;
@@ -39,12 +39,12 @@
 
 h1 {
     font-size: 13px;
-    margin-bottom: 20px;  /* Memberikan jarak antara heading dan paragraf */
+    margin-bottom: 20px;
 }
 
 .landing-main p {
-    font-size: 15px;  /* Membesarkan ukuran font paragraf */
-    line-height: 1.5;  /* Menambahkan jarak antar baris */
-    margin-bottom: 30px;  /* Memberikan jarak antara paragraf dan tombol */
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 30px;
     text-align: center;
 }
