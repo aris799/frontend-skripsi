@@ -1,0 +1,125 @@
+import React, { useEffect, useState } from "react";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
+import "../styles/Register.css";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import GoogleSvg from "../assets/icons8-google.svg";
+
+const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("auth")) || "");
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    let name = e.target.name.value;
+    let lastname = e.target.lastname.value;
+    let email = e.target.email.value;
+    let password = e.target.password.value;
+    let confirmPassword = e.target.confirmPassword.value;
+
+    // Tentukan baseURL berdasarkan environment
+    const baseURL = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000'  // URL lokal
+      : import.meta.env.VITE_BACKEND_JS_URL;  // URL production
+
+    if (name.length > 0 && lastname.length > 0 && email.length > 0 && password.length > 0 && confirmPassword.length > 0) {
+      if (password === confirmPassword) {
+        const formData = {
+          username: name + " " + lastname,
+          email,
+          password,
+        };
+        try {
+          const response = await axios.post(
+            `${baseURL}/api/v1/register`, 
+            formData
+          );
+          toast.success("Registration successful");
+          navigate("/login");
+        } catch (err) {
+          // Error handling yang lebih detail
+          const errorMsg = err.response?.data?.message || err.message || 'Registration failed';
+          toast.error(errorMsg);
+          console.error('Register error:', err);
+        }
+      } else {
+        toast.error("Passwords don't match");
+      }
+    } else {
+      toast.error("Please fill all inputs");
+    }
+  };
+
+  useEffect(() => {
+    if (token !== "") {
+      toast.success("You already logged in");
+      navigate("/dashboard");
+    }
+  }, [token, navigate]);
+
+  return (
+    <div className="register-main">
+      <div className="register-left">
+        <img
+          src="https://res.cloudinary.com/diogvlobw/image/upload/v1762062126/Logo_SRSIK_Vertical_da5k1s.png"
+          alt="Logo SRSIK"
+          className="register-image"
+        />
+      </div>
+      <div className="register-right">
+        <div className="register-right-container">
+          <div className="register-center">
+            <h2>Welcome to our website!</h2>
+            <p>Please enter your details</p>
+            <form onSubmit={handleRegisterSubmit}>
+              <input type="text" placeholder="Name" name="name" required={true} />
+              <input type="text" placeholder="Lastname" name="lastname" required={true} />
+              <input type="email" placeholder="Email" name="email" required={true} />
+              <div className="pass-input-div">
+                <input type={showPassword ? "text" : "password"} placeholder="Password" name="password" required={true} />
+                {showPassword ? (
+                  <FaEyeSlash onClick={() => { setShowPassword(!showPassword); }} />
+                ) : (
+                  <FaEye onClick={() => { setShowPassword(!showPassword); }} />
+                )}
+              </div>
+              <div className="pass-input-div">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  name="confirmPassword"
+                  required={true}
+                />
+                {showPassword ? (
+                  <FaEyeSlash onClick={() => { setShowPassword(!showPassword); }} />
+                ) : (
+                  <FaEye onClick={() => { setShowPassword(!showPassword); }} />
+                )}
+              </div>
+              <div className="register-center-buttons">
+                <button type="submit">Sign Up</button>
+                <button 
+                  type="submit" 
+                  disabled
+                  className="google-login-button"
+                >
+                  <img src={GoogleSvg} alt="" />
+                  Log In with Google
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <p className="register-bottom-p">
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
